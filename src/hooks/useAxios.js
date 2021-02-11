@@ -3,30 +3,25 @@ import axios from "axios";
 import uuid from "uuid";
 
 const useAxios = (url) => {
-  const [responses, setResponses] = useState(null);
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   //after 1st render, fetch
   useEffect(() => {
-    try {
-      axios.get(url).then((res) => setResponses(res.data));
-    } catch (e) {
-      console.log(e);
-    }
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(url);
+        setResponse(res.data);
+      } catch (e) {
+        setError(e);
+      }
+      setIsLoading(false);
+    };
+    fetchData();
   }, []);
 
-  const addCard = (url) => {
-    try {
-      axios
-        .get(url)
-        .then((res) =>
-          setResponses([...responses, { ...res.data, id: uuid() }])
-        );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  return [responses, addCard];
+  return { response, error, isLoading };
 };
 
 export default useAxios;

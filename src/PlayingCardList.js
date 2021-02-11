@@ -16,24 +16,20 @@ function CardTable() {
     setCards(cards => [...cards, { ...response.data, id: uuid() }]);
   }; */
 
-  const [cards, addCard] = useAxios([]);
+  const data = useAxios("https://deckofcardsapi.com/api/deck/new/draw/");
 
   return (
     <div className="PlayingCardList">
       <h3>Pick a card, any card!</h3>
       <div>
-        <button
-          onClick={() =>
-            addCard("https://deckofcardsapi.com/api/deck/new/draw/")
-          }
-        >
-          Add a playing card!
-        </button>
+        <button>Add a playing card!</button>
       </div>
       <div className="PlayingCardList-card-area">
-        {cards.map((cardData) => (
-          <PlayingCard key={cardData.id} front={cardData.cards[0].image} />
-        ))}
+        {data.isLoading ? (
+          "loading..."
+        ) : (
+          <PlayingCard front={data.response.cards[0].image} />
+        )}
       </div>
     </div>
   );
