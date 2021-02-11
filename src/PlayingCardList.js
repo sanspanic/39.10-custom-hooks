@@ -22,14 +22,14 @@ function CardTable() {
     <div className="PlayingCardList">
       <h3>Pick a card, any card!</h3>
       <div>
-        <button>Add a playing card!</button>
+        <button onClick={() => data.addCard()}>Add a playing card!</button>
       </div>
       <div className="PlayingCardList-card-area">
-        {data.isLoading ? (
-          "loading..."
-        ) : (
-          <PlayingCard front={data.response.cards[0].image} />
-        )}
+        {data.isLoading
+          ? "loading..."
+          : data.responses.map((r) => (
+              <PlayingCard key={r.id} front={r.cards[0].image} />
+            ))}
       </div>
     </div>
   );
